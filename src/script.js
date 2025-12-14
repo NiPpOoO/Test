@@ -46,6 +46,19 @@ async function initAR() {
       "./config.json",   // config.json рядом с index.html
       true
     );
+    console.log("[ARnft] appData:", nft.appData);
+    console.log("[ARnft] addPath:", nft.addPath);
+    console.log("[ARnft] appData:", nft.appData);
+    console.log("[ARnft] addPath:", nft.addPath);
+
+// Проверка загрузки файлов
+    ["fset", "fset3", "iset"].forEach(ext => {
+    const url = `./assets/markers/snowman/snowman.${ext}`;
+    fetch(url)
+    .then(res => console.log(`[CHECK] ${url} → ${res.status}`))
+    .catch(err => console.error(`[CHECK ERROR] ${url}`, err));
+    });
+
 
     console.log("[ARnft] init() success:", nft);
 
