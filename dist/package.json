@@ -1,0 +1,68 @@
+{
+    "name": "@webarkit/ar-nft",
+    "version": "0.14.12",
+    "main": "dist/ARnft.js",
+    "module": "dist/ARnft.mjs",
+    "types": "types/src/index.d.ts",
+    "description": "WebAR Javscript library for markerless AR",
+    "keywords": [
+        "ARToolKit",
+        "AR",
+        "ARnft",
+        "Augmented Reality",
+        "WebAR",
+        "JavaScript",
+        "jsartoolkit",
+        "jsartoolkit5",
+        "jsartoolkitNFT",
+        "NFT",
+        "Natural Feature Tracking",
+        "image tracking",
+        "markerless"
+    ],
+    "author": {
+        "name": "Walter Perdan",
+        "email": "github@kalwaltart.it",
+        "url": "https://www.kalwaltart.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/webarkit/ARnft"
+    },
+    "homepage": "https://github.com/webarkit/ARnft",
+    "contributors": [
+        "Github Contributors (https://github.com/webarkit/ARnft/graphs/contributors)"
+    ],
+    "bugs": {
+        "url": "https://github.com/webarkit/ARnft/issues"
+    },
+    "devDependencies": {
+        "@types/node": "22.13.0",
+        "@types/stats.js": "^0.17.3",
+        "@types/uuid": "10.0.0",
+        "prettier": "3.6.2",
+        "rimraf": "6.0.1",
+        "stats.js": "^0.17.0",
+        "ts-loader": "9.5.4",
+        "typedoc": "0.28.14",
+        "typescript": "5.9.3",
+        "webpack": "5.102.1",
+        "webpack-cli": "6.0.1",
+        "worker-loader": "^3.0.8"
+    },
+    "scripts": {
+        "build-ts": "rimraf ./dist && tsc && webpack --mode production",
+        "dev-ts": "rimraf ./dist && tsc && webpack --mode development --progress --watch",
+        "docs": "typedoc",
+        "format-check": "prettier --check .",
+        "format": "prettier --write ."
+    },
+    "license": "LGPL-3.0",
+    "resolutions": {},
+    "dependencies": {
+        "@webarkit/jsartoolkit-nft": "1.7.5",
+        "@webarkit/oneeurofilter-ts": "0.1.2",
+        "terser-webpack-plugin": "5.3.14",
+        "uuid": "13.0.0"
+    }
+}
