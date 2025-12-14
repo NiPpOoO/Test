@@ -25,22 +25,23 @@
       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
     >
       <!-- NFT-маркер снеговика -->
-<a-nft
-  type="nft"
-  url="https://nippooo.github.io/Test/assets/markers/snowman/snowman"
-  smooth="true"
-  smoothCount="10"
-  smoothTolerance=".01"
-  smoothThreshold="5"
->
-  <a-entity
-    gltf-model="https://nippooo.github.io/Test/assets/models/Fox.glb"
-    scale="0.5 0.5 0.5"
-    position="0 0 0"
-  >
-  </a-entity>
-</a-nft>
-  
+      <a-nft
+        type="nft"
+        url="https://nippooo.github.io/Test/assets/markers/snowman"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+      >
+        <!-- Fox.glb модель -->
+        <a-entity
+          gltf-model=https://nippooo.github.io/Test/assets/models/Fox.glb
+          scale="0.3 0.3 0.3"
+          position="0 0 0"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000"
+        >
+        </a-entity>
+      </a-nft>
 
       <!-- Камера -->
       <a-entity camera></a-entity>
