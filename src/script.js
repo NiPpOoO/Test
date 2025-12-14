@@ -5,7 +5,6 @@ import ARnftThreejs from "arnft-threejs";
 const { SceneRendererTJS, NFTaddTJS } = ARnftThreejs;
 
 const statusEl = document.getElementById("status");
-const swapBtn = document.getElementById("swapCamera");
 const videoEl = document.getElementById("video");
 
 let width = 640;
@@ -98,15 +97,3 @@ async function initAR() {
     setStatus("Ошибка запуска. Проверь HTTPS и разрешение камеры.");
   }
 })();
-
-// Переключение камеры
-swapBtn.addEventListener("click", async () => {
-  facingMode = facingMode === "environment" ? "user" : "environment";
-  try {
-    await startCamera();
-    setStatus(`Камера: ${facingMode === "environment" ? "тыльная" : "фронтальная"}`);
-  } catch (err) {
-    console.error(err);
-    setStatus("Не удалось переключить камеру");
-  }
-});
