@@ -1,4 +1,3 @@
-// src/script.js
 import * as THREE from "three";
 import arnft from "arnft";
 const { ARnft } = arnft;
@@ -6,14 +5,12 @@ import ARnftThreejs from "arnft-threejs";
 const { SceneRendererTJS, NFTaddTJS } = ARnftThreejs;
 
 const statusEl = document.getElementById("status");
-const startBtn = document.getElementById("startAR");
 const swapBtn = document.getElementById("swapCamera");
 const videoEl = document.getElementById("video");
 
 let width = 640;
 let height = 480;
 let facingMode = "environment";
-let nftRef = null;
 
 function setStatus(msg) { if (statusEl) statusEl.textContent = msg; }
 
@@ -30,7 +27,6 @@ async function startCamera() {
 async function initAR() {
   setStatus("Инициализация…");
 
-  // путь к ПАПКЕ маркера и отдельно имя
   const markerPaths = ["assets/markers/snowman"];
   const markerNames = ["snowman"];
 
@@ -40,7 +36,6 @@ async function initAR() {
     "./config.json",
     true
   );
-  nftRef = nft;
 
   document.addEventListener("containerEvent", () => {
     const canvas = document.getElementById("canvas");
@@ -68,7 +63,7 @@ async function initAR() {
     light.position.set(0.5, 0.3, 0.866);
     scene.add(light);
 
-    // Классический куб
+    // Куб
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshStandardMaterial({ color: "#00ccff" });
     const cube = new THREE.Mesh(geometry, material);
@@ -76,7 +71,6 @@ async function initAR() {
     cube.visible = false;
 
     const nftAddTJS = new NFTaddTJS(nft.uuid);
-    // Привязка объекта к маркеру: add(object, markerName, visibilityWhenLost)
     nftAddTJS.add(cube, "snowman", false);
 
     const tick = () => { sceneThreejs.draw(); requestAnimationFrame(tick); };
@@ -93,17 +87,17 @@ async function initAR() {
   });
 }
 
-// Старт по клику (важно для разрешения камеры)
-startBtn.addEventListener("click", async () => {
+// Запускаем сразу при загрузке
+(async () => {
   try {
     await startCamera();
-    setStatus("Камера запущена");
     await initAR();
+    setStatus("Камера запущена, AR готов.");
   } catch (err) {
     console.error(err);
     setStatus("Ошибка запуска. Проверь HTTPS и разрешение камеры.");
   }
-});
+})();
 
 // Переключение камеры
 swapBtn.addEventListener("click", async () => {
