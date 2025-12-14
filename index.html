@@ -41,6 +41,15 @@
   >
   </a-entity>
 </a-nft>
+  <script>
+  document.addEventListener("markerFound", e => {
+    console.log("[AR.js] Маркер найден:", e);
+  });
+  document.addEventListener("markerLost", e => {
+    console.log("[AR.js] Маркер потерян:", e);
+  });
+</script>
+
 
       <!-- Камера -->
       <a-entity camera></a-entity>
