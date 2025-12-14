@@ -1,25 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ru">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="WebAR example made with ARnft markerless library"
-    />
-    <link rel="apple-touch-icon" sizes="192x192" href="/ARnft-square-logo-192x192.png" />
-    <link rel="apple-touch-icon" sizes="512x512" href="/ARnft-square-logo-512x512.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="/manifest.json" />
-    <title>ARnft ES6 React</title>
+    <meta charset="utf-8" />
+    <title>Snowman WebAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div class="ui">
+      <button id="startAR">Запустить AR</button>
+      <button id="swapCamera">Переключить камеру</button>
+      <span id="status">Готово к запуску</span>
+    </div>
+
+    <!-- скрытое видео для управления медиапотоком -->
+    <video id="video" playsinline muted autoplay style="display:none;"></video>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+          "arnft-threejs": "https://raw.githack.com/webarkit/ARnft-threejs/master/dist/ARnftThreejs.mjs",
+          "arnft": "https://raw.githack.com/webarkit/ARnft/master/dist/ARnft.mjs"
+        }
+      }
+    </script>
+
+    <script type="module" src="./src/script.js"></script>
   </body>
 </html>

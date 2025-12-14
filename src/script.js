@@ -1,0 +1,118 @@
+// src/script.js
+import * as THREE from "three";
+import arnft from "arnft";
+const { ARnft } = arnft;
+import ARnftThreejs from "arnft-threejs";
+const { SceneRendererTJS, NFTaddTJS } = ARnftThreejs;
+
+const statusEl = document.getElementById("status");
+const startBtn = document.getElementById("startAR");
+const swapBtn = document.getElementById("swapCamera");
+const videoEl = document.getElementById("video");
+
+let width = 640;
+let height = 480;
+let facingMode = "environment";
+let nftRef = null;
+
+function setStatus(msg) { if (statusEl) statusEl.textContent = msg; }
+
+async function startCamera() {
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: false,
+    video: { facingMode, width: { min: 480, max: 640 } }
+  });
+  videoEl.srcObject = stream;
+  await new Promise(res => (videoEl.onloadedmetadata = () => res()));
+  await videoEl.play().catch(() => {});
+}
+
+async function initAR() {
+  setStatus("Инициализация…");
+
+  // путь к ПАПКЕ маркера и отдельно имя
+  const markerPaths = ["assets/markers/snowman"];
+  const markerNames = ["snowman"];
+
+  const nft = await ARnft.init(
+    width, height,
+    [markerPaths], [markerNames],
+    "./config.json",
+    true
+  );
+  nftRef = nft;
+
+  document.addEventListener("containerEvent", () => {
+    const canvas = document.getElementById("canvas");
+    const fov = (0.8 * 180) / Math.PI;
+    const ratio = window.innerWidth / window.innerHeight;
+
+    const config = {
+      renderer: {
+        alpha: true, antialias: true, context: null, precision: "mediump",
+        premultipliedAlpha: true, stencil: true, depth: true, logarithmicDepthBuffer: true
+      },
+      camera: { fov, ratio, near: 0.01, far: 2000 }
+    };
+
+    const sceneThreejs = new SceneRendererTJS(config, canvas, nft.uuid, true);
+    sceneThreejs.initRenderer();
+
+    const renderer = sceneThreejs.getRenderer();
+    const scene = sceneThreejs.getScene();
+
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.physicallyCorrectLights = true;
+
+    const light = new THREE.DirectionalLight("#fff", 0.9);
+    light.position.set(0.5, 0.3, 0.866);
+    scene.add(light);
+
+    // Классический куб
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshStandardMaterial({ color: "#00ccff" });
+    const cube = new THREE.Mesh(geometry, material);
+    cube.scale.set(80, 80, 80);
+    cube.visible = false;
+
+    const nftAddTJS = new NFTaddTJS(nft.uuid);
+    // Привязка объекта к маркеру: add(object, markerName, visibilityWhenLost)
+    nftAddTJS.add(cube, "snowman", false);
+
+    const tick = () => { sceneThreejs.draw(); requestAnimationFrame(tick); };
+    tick();
+
+    setStatus("Наведи камеру на снеговика.");
+  });
+
+  document.addEventListener(`getMatrixGL_RH-${nft.uuid}-snowman`, () => {
+    setStatus("Снеговик найден ✔");
+  });
+  document.addEventListener(`nftTrackingLost-${nft.uuid}-snowman`, () => {
+    setStatus("Трекинг потерян, наведи камеру снова…");
+  });
+}
+
+// Старт по клику (важно для разрешения камеры)
+startBtn.addEventListener("click", async () => {
+  try {
+    await startCamera();
+    setStatus("Камера запущена");
+    await initAR();
+  } catch (err) {
+    console.error(err);
+    setStatus("Ошибка запуска. Проверь HTTPS и разрешение камеры.");
+  }
+});
+
+// Переключение камеры
+swapBtn.addEventListener("click", async () => {
+  facingMode = facingMode === "environment" ? "user" : "environment";
+  try {
+    await startCamera();
+    setStatus(`Камера: ${facingMode === "environment" ? "тыльная" : "фронтальная"}`);
+  } catch (err) {
+    console.error(err);
+    setStatus("Не удалось переключить камеру");
+  }
+});
