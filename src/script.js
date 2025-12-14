@@ -7,10 +7,6 @@ const { SceneRendererTJS, NFTaddTJS } = ARnftThreejs;
 const statusEl = document.getElementById("status");
 const videoEl = document.getElementById("video");
 
-let width = 640;
-let height = 480;
-let facingMode = "environment";
-
 function setStatus(msg) {
   if (statusEl) statusEl.textContent = msg;
 }
@@ -18,7 +14,7 @@ function setStatus(msg) {
 async function startCamera() {
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
-    video: { facingMode, width: { min: 480, max: 640 } }
+    video: { facingMode: "environment", width: { min: 480, max: 640 } }
   });
   videoEl.srcObject = stream;
   await new Promise(res => (videoEl.onloadedmetadata = () => res()));
@@ -32,8 +28,7 @@ async function initAR() {
   const markerNames = [["snowman"]];
 
   const nft = await ARnft.init(
-    width,
-    height,
+    640, 480,
     markerPaths,
     markerNames,
     "./src/config.json",
@@ -42,54 +37,31 @@ async function initAR() {
 
   document.addEventListener("containerEvent", () => {
     const canvas = document.getElementById("canvas");
-    const fov = (0.8 * 180) / Math.PI;
-    const ratio = window.innerWidth / window.innerHeight;
 
-    const config = {
-      renderer: {
-        alpha: true,
-        antialias: true,
-        context: null,
-        precision: "mediump",
-        premultipliedAlpha: true,
-        stencil: true,
-        depth: true,
-        logarithmicDepthBuffer: true
+    const sceneThreejs = new SceneRendererTJS(
+      {
+        camera: { fov: 60, ratio: window.innerWidth / window.innerHeight, near: 0.01, far: 2000 },
+        renderer: { alpha: true, antialias: true }
       },
-      camera: {
-        fov,
-        ratio,
-        near: 0.01,
-        far: 2000
-      }
-    };
-
-    const sceneThreejs = new SceneRendererTJS(config, canvas, nft.uuid, true);
+      canvas, nft.uuid, true
+    );
     sceneThreejs.initRenderer();
 
-    const renderer = sceneThreejs.getRenderer();
     const scene = sceneThreejs.getScene();
-
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.physicallyCorrectLights = true;
-
     const light = new THREE.DirectionalLight("#fff", 0.9);
     light.position.set(0.5, 0.3, 0.866);
     scene.add(light);
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshStandardMaterial({ color: "#00ccff" });
-    const cube = new THREE.Mesh(geometry, material);
-    cube.scale.set(80, 80, 80);
-    cube.visible = false;
+    const cube = new THREE.Mesh(
+      new THREE.BoxGeometry(1,1,1),
+      new THREE.MeshStandardMaterial({ color: "#00ccff" })
+    );
+    cube.scale.set(80,80,80);
 
     const nftAddTJS = new NFTaddTJS(nft.uuid);
     nftAddTJS.add(cube, "snowman", false);
 
-    const tick = () => {
-      sceneThreejs.draw();
-      requestAnimationFrame(tick);
-    };
+    const tick = () => { sceneThreejs.draw(); requestAnimationFrame(tick); };
     tick();
 
     setStatus("Наведи камеру на снеговика.");
@@ -111,6 +83,6 @@ async function initAR() {
     setStatus("Камера запущена, AR готов.");
   } catch (err) {
     console.error("Ошибка запуска:", err);
-    setStatus("Ошибка запуска. Проверь HTTPS и разрешение камеры.");
+    setStatus("Ошибка запуска. Проверь HTTPS и пути к файлам.");
   }
 })();
