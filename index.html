@@ -24,34 +24,23 @@
       embedded
       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
     >
-      <!-- Модель всегда видна -->
-      <a-entity
-        gltf-model="https://nippooo.github.io/Test/assets/models/Fox.glb"
-        scale="0.2 0.2 0.2"
-        position="0 0 -2"
-      >
-      </a-entity>
-
-      <!-- NFT-маркер снеговика (для трекинга, но модель не исчезает) -->
-      <a-nft
-        type="nft"
-        url="https://nippooo.github.io/Test/assets/markers/snowman/snowman"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance=".01"
-        smoothThreshold="5"
-        emitevents="true"
-      >
-      </a-nft>
-
-      <script>
-        document.addEventListener("markerFound", e => {
-          console.log("[AR.js] Маркер найден:", e);
-        });
-        document.addEventListener("markerLost", e => {
-          console.log("[AR.js] Маркер потерян, но модель остаётся");
-        });
-      </script>
+      <!-- NFT-маркер снеговика -->
+<a-nft
+  type="nft"
+  url="https://nippooo.github.io/Test/assets/markers/snowman/snowman"
+  smooth="true"
+  smoothCount="10"
+  smoothTolerance=".01"
+  smoothThreshold="5"
+>
+  <a-entity
+    gltf-model="https://nippooo.github.io/Test/assets/models/Fox.glb"
+    scale="0.5 0.5 0.5"
+    position="0 0 0"
+  >
+  </a-entity>
+</a-nft>
+  
 
       <!-- Камера -->
       <a-entity camera></a-entity>
