@@ -33,8 +33,8 @@ async function initAR() {
   console.log("[ARnft] init() start...");
 
   try {
-    const markerPaths = [["./assets/markers/hiro/"]];
-    const markerNames = [["hiro"]];
+    const markerPaths = [["./assets/markers/snowman/"]];
+    const markerNames = [["snowman"]];
 
     console.log("[ARnft] markerPaths:", markerPaths);
     console.log("[ARnft] markerNames:", markerNames);
