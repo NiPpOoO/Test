@@ -33,14 +33,17 @@ async function initAR() {
   console.log("[ARnft] init() start...");
 
   try {
-    const markerPaths = [["./assets/markers/snowman"]];
-    const markerNames = [["snowman"]];
+    const markerPaths = [["./assets/markers/snowman/"]]; // путь к папке
+    const markerNames = [["snowman"]];                   // имя маркера
+
+    console.log("[ARnft] markerPaths:", markerPaths);
+    console.log("[ARnft] markerNames:", markerNames);
 
     const nft = await ARnft.init(
       640, 480,
       markerPaths,
       markerNames,
-      "./config.json",   // ⚠️ убедись, что config.json лежит рядом с index.html
+      "./config.json",   // config.json рядом с index.html
       true
     );
 
@@ -61,6 +64,7 @@ async function initAR() {
 
       const scene = sceneThreejs.getScene();
       const light = new THREE.DirectionalLight("#fff", 0.9);
+      light.position.set(0.5, 0.3, 0.866);
       scene.add(light);
 
       const cube = new THREE.Mesh(
