@@ -33,22 +33,7 @@
         smoothTolerance=".01"
         smoothThreshold="5"
       >
-      <script>
-      const marker = document.querySelector('#snowman-marker');
-      const status = document.querySelector('#marker-status');
-
-      marker.addEventListener('markerFound', () => {
-      status.textContent = '✅ Маркер найден';
-      status.classList.add('found');
-    status.classList.remove('lost');
-  });
-
-  marker.addEventListener('markerLost', () => {
-    status.textContent = '❌ Маркер не виден';
-    status.classList.add('lost');
-    status.classList.remove('found');
-  });
-</script>
+      
         <!-- Fox.glb модель -->
         <a-entity
           gltf-model=https://nippooo.github.io/Test/assets/models/Fox.glb
