@@ -11,27 +11,12 @@
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
 
     <link rel="stylesheet" href="./src/style.css" />
-    <style>
-      #status {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        padding: 8px 12px;
-        background: rgba(0,0,0,0.6);
-        color: #fff;
-        border-radius: 6px;
-        font-size: 14px;
-      }
-    </style>
   </head>
   <body style="margin:0; overflow:hidden;">
     <!-- Лоадер -->
     <div class="arjs-loader">
       <div>Загрузка маркера, подожди…</div>
     </div>
-
-    <!-- Индикатор состояния -->
-    <div id="status">Снеговик не виден</div>
 
     <a-scene
       vr-mode-ui="enabled: false;"
@@ -42,19 +27,18 @@
       <!-- NFT-маркер снеговика -->
       <a-nft
         type="nft"
-        url="https://nippooo.github.io/Test/assets/markers/snowman/snowman"
+        url="https://nippooo.github.io/Test/assets/markers/snowman"
         smooth="true"
         smoothCount="10"
         smoothTolerance=".01"
         smoothThreshold="5"
-        emitevents="true"
       >
         <!-- Fox.glb модель -->
         <a-entity
-          id="fox"
-          gltf-model="https://nippooo.github.io/Test/assets/models/Fox.glb"
+          gltf-model=https://nippooo.github.io/Test/assets/models/Fox.glb
           scale="0.3 0.3 0.3"
           position="0 0 0"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000"
         >
         </a-entity>
       </a-nft>
@@ -62,20 +46,5 @@
       <!-- Камера -->
       <a-entity camera></a-entity>
     </a-scene>
-
-    <script>
-      const marker = document.querySelector('a-nft');
-      const status = document.getElementById('status');
-
-      marker.addEventListener('markerFound', () => {
-        console.log("[AR.js] Снеговик виден");
-        status.textContent = "Снеговик виден";
-      });
-
-      marker.addEventListener('markerLost', () => {
-        console.log("[AR.js] Снеговик не виден");
-        status.textContent = "Снеговик не виден";
-      });
-    </script>
   </body>
 </html>
