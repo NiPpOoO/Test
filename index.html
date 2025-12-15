@@ -46,19 +46,5 @@
       <!-- Камера -->
       <a-entity camera></a-entity>
     </a-scene>
-        <script>
-      const marker = document.querySelector('a-nft');
-      const status = document.getElementById('status');
-
-      marker.addEventListener('markerFound', () => {
-        console.log("[AR.js] Снеговик виден");
-        status.textContent = "Снеговик виден";
-      });
-
-      marker.addEventListener('markerLost', () => {
-        console.log("[AR.js] Снеговик не виден");
-        status.textContent = "Снеговик не виден";
-      });
-    </script>
   </body>
 </html>
